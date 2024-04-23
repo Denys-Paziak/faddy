@@ -22,7 +22,7 @@ const Register = () => {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:3002/register', {
+            const response = await fetch('https://famdy-back.vercel.app/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

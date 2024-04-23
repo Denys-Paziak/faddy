@@ -22,7 +22,7 @@ const Login = () => {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:3002/login', {
+            const response = await fetch('https://famdy-back.vercel.app/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
