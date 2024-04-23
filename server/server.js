@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const URL = "http://localhost:3002";
+const URL = "https://famdy-back.vercel.app";
 
 class DataFetcher {
     constructor() {
