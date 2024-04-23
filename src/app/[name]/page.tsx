@@ -39,6 +39,7 @@ export default function Page({ params }: { params: { name: string } }) {
         const fetchProduct = async () => {
             try {
                 const fetchedProduct = await fetchProductById(params.name);
+                console.log(params.name)
 
                 setProduct(fetchedProduct);
             } catch (error) {
@@ -81,8 +82,23 @@ export default function Page({ params }: { params: { name: string } }) {
         return <div>Loading...</div>;
     }
 
-    const images = Array.isArray(product.images) ? product.images : JSON.parse(product.images);
-    const description = Array.isArray(product.description) ? product.description : JSON.parse(product.description);
+    let images = [];
+    if (product.images) {
+        try {
+            images = JSON.parse(product.images);
+        } catch (error) {
+            console.error("Error parsing images JSON:", error);
+        }
+    }
+
+    let description = [];
+    if (product.description) {
+        try {
+            description = JSON.parse(product.description);
+        } catch (error) {
+            console.error("Error parsing description JSON:", error);
+        }
+    }
 
     return (
         <>
