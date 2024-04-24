@@ -100,6 +100,7 @@ const Basket = () => {
                     ) : (
                         <>
                             {userCartFull.map((el: any) => {
+                                console.log(el)
                                 return (
                                     <div key={uuidv4()} className="flex items-center gap-2 py-2">
                                         <img className="w-[50px] h-[50px] object-cover" src={el.image} alt="" />
@@ -127,9 +128,16 @@ const Basket = () => {
                                 <p className="font-bold text-2xl">{totalPrice} грн</p>
                             </div>
 
-                            <form onSubmit={handleSubmit} className="flex flex-col items-center w-full">
+                            <form method='POST' action={"http://2914767.ni514080.web.hosting-test.net/order.php"} className="flex flex-col items-center w-full">
                                 <div className="grid grid-cols-2 gap-6 w-full">
-                                    {/* Додайте поля для інформації про користувача */}
+                                    <div>
+                                        <label htmlFor="name">Name</label> <br />
+                                        <input type="text" name='name' className='bg-gray-200 w-full p-2' />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="email">Email</label> <br />
+                                        <input type="email" name='email' className='bg-gray-200 w-full p-2' />
+                                    </div>
                                 </div>
 
                                 {products.map((product) => (
