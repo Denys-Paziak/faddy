@@ -1,35 +1,33 @@
-
 import React from 'react';
 import ShopItem from '../ShopItem/ShopItem';
 import { Pagination } from '../Pagination/Pagination';
 import { v4 as uuidv4 } from 'uuid';
 
-interface iProps {
-    limit: number,
-    numCol: number,
-    page: number,
-    categoryFilter: string,
-    data: any,
-    userLikes: any
+interface Product {
+    id: number;
+    name: string;
+    category: string;
+    [key: string]: any; // Інші властивості продукту
 }
 
+interface GoodsShelfProps {
+    limit: number;
+    numCol: number;
+    page: number;
+    categoryFilter: string;
+    data: Product[];
+    userLikes: number[];
+}
 
-export const GoodsShelf = ({ limit, page, categoryFilter, data, userLikes }: iProps) => {
-
+export const GoodsShelf: React.FC<GoodsShelfProps> = ({ limit, numCol, page, categoryFilter, data, userLikes }) => {
     let result = [...data];
 
-    console.log(userLikes)
-
-
     // Apply category filter
-    if (categoryFilter) {
-        if (categoryFilter !== "all") {
-            result = result.filter(el => el.category === categoryFilter);
-        }
+    if (categoryFilter && categoryFilter !== "all") {
+        result = result.filter(el => el.category === categoryFilter);
     }
 
     let numPage: number = Math.ceil(result.length / limit);
-
     let startItems = (page - 1) * limit;
     let endItems = startItems + limit;
 
@@ -39,17 +37,12 @@ export const GoodsShelf = ({ limit, page, categoryFilter, data, userLikes }: iPr
 
     return (
         <>
-            <div className={`shop-list grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4`}>
-                {result.map(el => {
-                    if (userLikes.indexOf(el.id) != -1) {
-                        return <ShopItem key={el.name + uuidv4()} el={el} liked={true} />
-                    } else {
-                        return <ShopItem key={el.name + uuidv4()} el={el} liked={false} />
-                    }
-                })}
+            <div className={`shop-list grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-${numCol}`}>
+                {result.map((el: any) => (
+                    <ShopItem key={el.name + uuidv4()} el={el} liked={userLikes.includes(el.id)} />
+                ))}
             </div>
             <Pagination numPage={numPage} activePage={page} categoryFilter={categoryFilter} />
-
         </>
     );
 };

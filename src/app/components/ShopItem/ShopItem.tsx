@@ -4,27 +4,34 @@ import Image from "next/image";
 import { FaHeart } from "react-icons/fa";
 import { SlBasket } from "react-icons/sl";
 import DataFetcher from "../../../../server/server";
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const { addToWishlist, addToCart } = new DataFetcher();
+const dataFetcher = new DataFetcher();
+const { addToWishlist, addToCart } = dataFetcher;
 
 import "./shopItem.css";
 
-interface Props {
-    el: any;
-    liked: boolean
+interface ShopItemProps {
+    el: {
+        id: number;
+        name: string;
+        category: string;
+        price: string;
+        sale: string;
+        images: string;
+    };
+    liked: boolean;
 }
 
-const ShopItem = ({ el, liked }: Props) => {
+const ShopItem: React.FC<ShopItemProps> = ({ el, liked }) => {
     const [likeBut, setLikeBut] = useState<string>("");
     const [basket, setBasket] = useState<string>("");
     const [logined, setLogined] = useState<boolean>(false);
 
     const images = JSON.parse(el.images);
 
-    const [token, setToken] = useState('');
+    const [token, setToken] = useState<string>('');
 
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
@@ -40,10 +47,9 @@ const ShopItem = ({ el, liked }: Props) => {
         } else {
             setLikeBut("");
         }
-    }, []);
+    }, [liked]);
 
-
-    const addToWishlistHandler = (id: any, token: any) => {
+    const addToWishlistHandler = (id: number, token: string) => {
         if (likeBut === "widget-active") {
             setLikeBut("");
         } else {
@@ -52,7 +58,7 @@ const ShopItem = ({ el, liked }: Props) => {
         addToWishlist(id, token);
     }
 
-    const addToCartHandler = (el: any, token: any) => {
+    const addToCartHandler = (el: ShopItemProps['el'], token: string) => {
         toast.success('Товар додано в кошик', {
             position: "bottom-right",
             autoClose: 5000,
@@ -66,24 +72,21 @@ const ShopItem = ({ el, liked }: Props) => {
         addToCart(el.id, 1, "s", parseFloat(el.price.split(" ")[0]), parseFloat(el.sale.split(" ")[0]), JSON.parse(el.images)[0], token);
     }
 
-
     return (
-
         <div className="shop-item">
             <ToastContainer />
             <div className="shop-item__image">
                 <Image src={images[0]} width={430} height={522} alt="shop" />
-
-                {logined ? <div className="shop-list__widget">
-                    <div className={`${likeBut} bg-white cursor-pointer`} onClick={() => addToWishlistHandler(el.id, token)}>
-                        <FaHeart />
+                {logined && (
+                    <div className="shop-list__widget">
+                        <div className={`${likeBut} bg-white cursor-pointer`} onClick={() => addToWishlistHandler(el.id, token)}>
+                            <FaHeart />
+                        </div>
+                        <div className={`${basket} bg-white cursor-pointer`} onClick={() => addToCartHandler(el, token)}>
+                            <SlBasket />
+                        </div>
                     </div>
-                    <div className={`${basket} bg-white cursor-pointer`} onClick={() => addToCartHandler(el, token)}>
-                        <SlBasket />
-                    </div>
-                </div> : ''}
-
-
+                )}
             </div>
             <div className="shop-item__text pt-5">
                 <h2>{el.name}</h2>

@@ -7,9 +7,7 @@ import Link from 'next/link';
 import { IoLogOutOutline } from 'react-icons/io5';
 import { useRouter } from 'next/navigation';
 
-interface HeaderProps { }
-
-export const Header: React.FC<HeaderProps> = () => {
+export const Header: React.FC = () => {
     const router = useRouter();
     const [token, setToken] = useState<string>("");
 
@@ -29,7 +27,7 @@ export const Header: React.FC<HeaderProps> = () => {
     return (
         <header className="container mx-auto grid grid-cols-2 md:grid-cols-3 items-center pt-5 pb-5">
             <Nav />
-            <Link href="/" className="logo text-3xl font-bold  mx-auto">FAMDY</Link>
+            <Link href="/" className="logo text-3xl font-bold mx-auto">FAMDY</Link>
             <div className="flex items-center gap-2 ml-auto">
                 {token ? (
                     <>
@@ -37,10 +35,9 @@ export const Header: React.FC<HeaderProps> = () => {
                             <div className='cursor-pointer p-2 rounded hover:bg-black hover:text-white'>
                                 <FaRegHeart />
                             </div>
-
                         </Link>
                         <Link href="/basket">
-                            <div className='cursor-pointer  p-2 rounded hover:bg-black hover:text-white'>
+                            <div className='cursor-pointer p-2 rounded hover:bg-black hover:text-white'>
                                 <SlBasket />
                             </div>
                         </Link>
@@ -49,10 +46,10 @@ export const Header: React.FC<HeaderProps> = () => {
                         </div>
                     </>
                 ) : (
-                    <div className="container flex gap-2 justify-center items-center text-center">
-                        <Link href="/login">Вхід</Link>
-                        /
-                        <Link href="/register">Реєстрація</Link>
+                    <div className="flex gap-2 justify-center items-center">
+                        <Link href="/login" className="hover:underline">Вхід</Link>
+                        <span>/</span>
+                        <Link href="/register" className="hover:underline">Реєстрація</Link>
                     </div>
                 )}
             </div>

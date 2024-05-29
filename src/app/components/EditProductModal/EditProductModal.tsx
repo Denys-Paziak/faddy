@@ -1,22 +1,30 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+interface Product {
+    id: number;
+    name: string;
+    size: string;
+    quantity: number;
+    price: string;
+}
+
 interface EditProductModalProps {
-    product: any;
-    onSave: (updatedProduct: any) => void;
+    product: Product;
+    onSave: (updatedProduct: Product) => void;
     onClose: () => void;
 }
 
 const sizes = ['s', 'm', 'l'];
 
 const EditProductModal: React.FC<EditProductModalProps> = ({ product, onSave, onClose }) => {
-    const [editedProduct, setEditedProduct] = useState<any>(product);
+    const [editedProduct, setEditedProduct] = useState<Product>(product);
     const [sizeActive, setSizeActive] = useState(sizes.indexOf(product.size));
     const [count, setCount] = useState(product.quantity);
 
     const handleSizeClick = (index: number) => {
         setSizeActive(index);
-        setEditedProduct((prevProduct: any) => ({ ...prevProduct, size: sizes[index] }));
+        setEditedProduct((prevProduct) => ({ ...prevProduct, size: sizes[index] }));
     };
 
     const handleSave = () => {
@@ -51,14 +59,14 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ product, onSave, on
                         <div className="counter flex gap-2 items-center">
                             <button
                                 className="py-2 px-4 border bg-black text-white duration-150 ease-in-out"
-                                onClick={() => setCount((prevCount: any) => Math.max(prevCount - 1, 1))}
+                                onClick={() => setCount((prevCount) => Math.max(prevCount - 1, 1))}
                             >
                                 -
                             </button>
                             <p>{count}</p>
                             <button
                                 className="py-2 px-4 border bg-black text-white duration-150 ease-in-out"
-                                onClick={() => setCount((prevCount: any) => prevCount + 1)}
+                                onClick={() => setCount((prevCount) => prevCount + 1)}
                             >
                                 +
                             </button>
@@ -81,7 +89,6 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ product, onSave, on
                         Відмінити
                     </button>
                 </div>
-
             </div>
         </div>
     );

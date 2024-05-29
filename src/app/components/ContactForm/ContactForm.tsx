@@ -18,20 +18,40 @@ const ContactForm = () => {
         message: '',
     });
 
-    const handleInputChange = (e: any) => {
+    const validateEmail = (email: string) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
         setValidationErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
     };
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         // Валідація
-        const errors = {};
+        const errors: any = {};
 
+        if (!formData.name) {
+            errors.name = "Ім'я є обов'язковим";
+        }
+        if (!formData.email) {
+            errors.email = 'Email є обов\'язковим';
+        } else if (!validateEmail(formData.email)) {
+            errors.email = 'Некоректний формат Email';
+        }
+        if (!formData.phoneNumber) {
+            errors.phoneNumber = 'Номер телефону є обов\'язковим';
+        }
+        if (!formData.message) {
+            errors.message = 'Повідомлення є обов\'язковим';
+        }
 
         if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors);
             setErrorMessage('Будь ласка, заповніть всі обов\'язкові поля.');
             setSuccessMessage('');
             return;
@@ -43,7 +63,7 @@ const ContactForm = () => {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: new URLSearchParams(formData),
+                body: new URLSearchParams(formData as any),
             });
 
             const result = await response.text();
@@ -51,11 +71,17 @@ const ContactForm = () => {
             if (response.ok) {
                 setSuccessMessage(result);
                 setErrorMessage('');
+                setFormData({
+                    name: '',
+                    email: '',
+                    phoneNumber: '',
+                    message: '',
+                });
             } else {
                 setErrorMessage(result);
                 setSuccessMessage('');
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Помилка відправлення форми:', error);
             setErrorMessage('Виникла помилка під час відправлення форми.');
             setSuccessMessage('');

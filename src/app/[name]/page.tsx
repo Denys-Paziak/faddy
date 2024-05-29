@@ -7,10 +7,8 @@ import { Navigation } from 'swiper/modules';
 import Image from 'next/image';
 import { v4 as uuidv4 } from 'uuid';
 import { Header } from "@/app/components/Header/Header";
-
-
+import Loader from "@/app/components/Loader/Loader";
 import DataFetcher from "../../../server/server";
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Link from 'next/link';
@@ -19,31 +17,38 @@ const { addToCart, fetchProductById } = new DataFetcher();
 
 const sizes = ['s', 'm', 'l'];
 
-export default function Page({ params }: { params: { name: string } }) {
-    const [count, setCount] = useState(1);
-    const [sizeActive, setSizeActive] = useState(0);
-    const [addedToCart, setAddedToCart] = useState(false);
-    const [product, setProduct] = useState<any>({});
-    const [storedToken, setToken] = useState("");
+interface Product {
+    id: string;
+    name: string;
+    price: string;
+    sale: string;
+    images: string;
+    description: string;
+}
 
+export default function Page({ params }: { params: any }) {
+    const [count, setCount] = useState<number>(1);
+    const [sizeActive, setSizeActive] = useState<number>(0);
+    const [product, setProduct] = useState<Product | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [storedToken, setToken] = useState<string | null>("");
 
     useEffect(() => {
-
         const storedToken = localStorage.getItem("token");
 
-        if (storedToken != null) {
+        if (storedToken) {
             setToken(storedToken);
         }
 
-
         const fetchProduct = async () => {
+            setLoading(true);
             try {
                 const fetchedProduct = await fetchProductById(params.name);
-                console.log(params.name)
-
                 setProduct(fetchedProduct);
             } catch (error) {
                 console.error('Помилка при отриманні даних товару:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -57,7 +62,7 @@ export default function Page({ params }: { params: { name: string } }) {
     const handleAddToCart = async () => {
         try {
             if (product && product.id) {
-                const productId = product.id;
+                const productId: any = product.id;
                 const size = sizes[sizeActive];
 
                 await addToCart(productId, count, size, parseFloat(product.price.split(" ")[0]), parseFloat(product.sale.split(" ")[0]), JSON.parse(product.images)[0], storedToken);
@@ -78,12 +83,12 @@ export default function Page({ params }: { params: { name: string } }) {
         }
     };
 
-    if (!product) {
-        return <div>Loading...</div>;
+    if (loading) {
+        return <Loader />;
     }
 
-    let images = [];
-    if (product.images) {
+    let images: string[] = [];
+    if (product?.images) {
         try {
             images = JSON.parse(product.images);
         } catch (error) {
@@ -91,8 +96,8 @@ export default function Page({ params }: { params: { name: string } }) {
         }
     }
 
-    let description = [];
-    if (product.description) {
+    let description: string[] = [];
+    if (product?.description) {
         try {
             description = JSON.parse(product.description);
         } catch (error) {
@@ -104,7 +109,7 @@ export default function Page({ params }: { params: { name: string } }) {
         <>
             <Header />
             <div className="container mx-auto py-10">
-                <ToastContainer></ToastContainer>
+                <ToastContainer />
                 <div className="flex gap-10 flex-col lg:flex-row">
                     <Swiper
                         navigation={true}
@@ -121,10 +126,10 @@ export default function Page({ params }: { params: { name: string } }) {
                     </Swiper>
                     <div className="text w-[100%] lg:w-[50%]">
                         <div className="name">
-                            <h2 className="text-4xl font-bold ">{product.name}</h2>
+                            <h2 className="text-4xl font-bold ">{product?.name}</h2>
                             <div className="flex gap-4 ">
-                                <p className="font-bold py-4 text-2xl">{product.price}</p>
-                                <p className="line-through py-4 text-2xl">{product.sale}</p>
+                                <p className="font-bold py-4 text-2xl">{product?.price}</p>
+                                <p className="line-through py-4 text-2xl">{product?.sale}</p>
                             </div>
 
                             <div className="flex gap-10">
@@ -166,27 +171,22 @@ export default function Page({ params }: { params: { name: string } }) {
                                 </div>
                             </div>
 
-                            {storedToken ? <button
-                                className="mt-6 py-2 px-4 border hover:bg-black hover:text-white duration-150 ease-in-out"
-                                onClick={handleAddToCart}
-                            >
-                                Додати в кошик
-                            </button> : <>
-                                <p className='mt-12 mb-6'> Щоб додати товар в кошик ви маєте бути зараєстрованими</p>
+                            {storedToken ? (
+                                <button
+                                    className="mt-6 py-2 px-4 border hover:bg-black hover:text-white duration-150 ease-in-out"
+                                    onClick={handleAddToCart}
+                                >
+                                    Додати в кошик
+                                </button>
+                            ) : (
+                                <>
+                                    <p className='mt-12 mb-6'> Щоб додати товар в кошик ви маєте бути зареєстрованими</p>
 
-                                <div className=" flex ">
-                                    <Link href="/login">Login</Link>
-                                    /
-                                    <Link href="/register">Register</Link>
-                                </div>
-                            </>}
-
-
-
-                            {addedToCart && (
-                                <div className="mt-2 text-green-600">
-                                    Товар додано в кошик!
-                                </div>
+                                    <div className="flex">
+                                        <Link href="/login">Login</Link>/
+                                        <Link href="/register">Register</Link>
+                                    </div>
+                                </>
                             )}
                         </div>
                     </div>
@@ -205,6 +205,5 @@ export default function Page({ params }: { params: { name: string } }) {
                 </ul>
             </div>
         </>
-
     );
 }
