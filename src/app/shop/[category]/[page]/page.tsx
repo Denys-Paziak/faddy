@@ -78,9 +78,7 @@ export default function Page({ params }: { params: { category: string, page: num
         }
     }, [params.category]);
 
-    if (loading) {
-        return <Loader />;
-    }
+
 
     return (
         <>
@@ -99,7 +97,9 @@ export default function Page({ params }: { params: { category: string, page: num
                         </div>
                     </div>
                 </div>
-                <GoodsShelf data={products} limit={limit} numCol={col} categoryFilter={category} page={params.page} userLikes={userLikes} />
+
+                {loading ? <Loader /> : <GoodsShelf data={products} limit={limit} numCol={col} categoryFilter={category} page={params.page} userLikes={userLikes} />}
+
             </div>
         </>
     );

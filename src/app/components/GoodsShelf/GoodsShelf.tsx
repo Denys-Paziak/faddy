@@ -2,6 +2,7 @@ import React from 'react';
 import ShopItem from '../ShopItem/ShopItem';
 import { Pagination } from '../Pagination/Pagination';
 import { v4 as uuidv4 } from 'uuid';
+import Link from 'next/link';
 
 interface Product {
     id: number;
@@ -33,6 +34,18 @@ export const GoodsShelf: React.FC<GoodsShelfProps> = ({ limit, numCol, page, cat
 
     if (limit >= 0) {
         result = result.slice(startItems, endItems);
+    }
+
+    if (page > numPage) {
+        return <>
+            <h2 className='text-4xl'>Щось пішло не так</h2>
+            <div className='my-4'>
+                <Link href={`/shop/${categoryFilter}/1`} >
+                    Перейти на стоірнку з товарами
+                </Link>
+            </div>
+
+        </>
     }
 
     return (
