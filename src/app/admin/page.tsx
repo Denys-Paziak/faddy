@@ -82,12 +82,10 @@ export default function Admin() {
             dataFeatcher.admin(storedToken).then(data => {
                 if (data.status == 500) {
                     router.push('/');
-
                 } else {
                     setPriceStatistic(data.statistics);
                     setCategoryCounts(data.categoryCounts);
                 }
-
             })
         } else {
             router.push('/');

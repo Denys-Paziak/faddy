@@ -2,8 +2,12 @@
 import { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import DataFetcher from "../../../../../server/server";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation';
 
 const EditProduct: React.FC<{ productId: string, params: { id: string } }> = ({ params, productId }) => {
+    const router = useRouter();
     const [name, setName] = useState("");
     const [images, setImages] = useState<File[]>([]);
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -12,7 +16,6 @@ const EditProduct: React.FC<{ productId: string, params: { id: string } }> = ({ 
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState("");
     const dataFeatcher = new DataFetcher();
-
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -34,16 +37,65 @@ const EditProduct: React.FC<{ productId: string, params: { id: string } }> = ({ 
         setImagePreviews(previews);
     };
 
+    const validateFields = () => {
+        if (!name || !price || !category) {
+            toast.error("Please fill in all required fields.", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return false;
+        }
+        if (isNaN(parseFloat(price))) {
+            toast.error("Price must be a valid number.", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return false;
+        }
+        if (sale && isNaN(parseFloat(sale))) {
+            toast.error("Sale must be a valid number.", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return false;
+        }
+        return true;
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        if (!validateFields()) {
+            return;
+        }
+
         const storedToken = localStorage.getItem("token");
+
+        let descArr = description.split(",");
 
         const formData = new FormData();
         formData.append('name', name);
         formData.append('price', price);
         formData.append('sale', sale);
-        formData.append('description', JSON.stringify({ text: description }));
+        formData.append('description', JSON.stringify(descArr));
         formData.append('category', category);
         images.forEach((image, index) => {
             formData.append('images', image);
@@ -51,8 +103,31 @@ const EditProduct: React.FC<{ productId: string, params: { id: string } }> = ({ 
 
         try {
             await dataFeatcher.updateProduct(storedToken, params.id, formData);
+            toast.success("Product updated successfully", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            setTimeout(() => {
+                router.push('/admin/products');
+            }, 2000);
         } catch (error) {
             console.error("Failed to update product", error);
+            toast.error("Failed to update product", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
         }
     };
 
@@ -63,6 +138,7 @@ const EditProduct: React.FC<{ productId: string, params: { id: string } }> = ({ 
 
     return (
         <div className="container mx-auto p-4">
+            <ToastContainer />
             <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-bold mb-6 text-gray-800">Редагувати товар</h2>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">

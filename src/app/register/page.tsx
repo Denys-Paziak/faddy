@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,8 +21,22 @@ const Register = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        if (formData.password.length < 8) {
+            toast.error("Пароль має бути не менше 8 символів", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return;
+        }
+
         if (formData.password !== formData.confirmPassword) {
-            toast.error("Passwords do not match", {
+            toast.error("Паролі не збігаються", {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: true,
@@ -70,7 +84,7 @@ const Register = () => {
             }
         } catch (error) {
             console.error('Registration error:', error);
-            toast.error('An error occurred while registering.', {
+            toast.error('Під час реєстрації сталася помилка.', {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: true,

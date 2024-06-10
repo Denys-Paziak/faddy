@@ -33,7 +33,7 @@ export default function Admin() {
         dataFeatcher.admin(storedToken).then(data => {
             console.log(data.categoryCounts);
             setAllCategory(data.categoryCounts);
-            setProducts(data.products);
+            setProducts(data.products.reverse()); // Зміна порядку товарів
         });
     }, []);
 
@@ -46,7 +46,7 @@ export default function Admin() {
             await dataFeatcher.admin(storedToken).then(data => {
                 console.log(data.categoryCounts);
                 setAllCategory(data.categoryCounts);
-                setProducts(data.products);
+                setProducts(data.products.reverse()); // Зміна порядку товарів після видалення
             });
         } catch (error) {
             console.error("Failed to delete product", error);
@@ -157,7 +157,7 @@ export default function Admin() {
                                         src={image}
                                         width={200}
                                         height={200}
-                                        alt="Picture of the author"
+                                        alt="Product image"
                                     />
                                     <div className="mt-4 p-4">
                                         <h2>{el.name}</h2>

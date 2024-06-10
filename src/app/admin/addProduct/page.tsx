@@ -2,8 +2,12 @@
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import DataFetcher from "../../../../server/server";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation';
 
 const AddProduct: React.FC = () => {
+    const router = useRouter();
     const [name, setName] = useState("");
     const [images, setImages] = useState<File[]>([]);
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -19,16 +23,65 @@ const AddProduct: React.FC = () => {
         setImagePreviews(previews);
     };
 
+    const validateFields = () => {
+        if (!name || !price || !category || images.length === 0) {
+            toast.error("Please fill in all required fields and upload at least one image.", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return false;
+        }
+        if (isNaN(parseFloat(price))) {
+            toast.error("Price must be a valid number.", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return false;
+        }
+        if (sale && isNaN(parseFloat(sale))) {
+            toast.error("Sale must be a valid number.", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return false;
+        }
+        return true;
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        if (!validateFields()) {
+            return;
+        }
+
         const storedToken = localStorage.getItem("token");
+
+        let descArr = description.split(",");
 
         const formData = new FormData();
         formData.append('name', name);
         formData.append('price', price);
         formData.append('sale', sale);
-        formData.append('description', JSON.stringify({ text: description }));
+        formData.append('description', JSON.stringify(descArr));
         formData.append('category', category);
         images.forEach((image, index) => {
             formData.append('images', image); // зміна ім'я поля на 'images'
@@ -36,8 +89,31 @@ const AddProduct: React.FC = () => {
 
         try {
             await dataFeatcher.addProduct(storedToken, formData);
+            toast.success("Product added successfully", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            setTimeout(() => {
+                router.push('/admin/products');
+            }, 2000);
         } catch (error) {
             console.error("Failed to add product", error);
+            toast.error("Failed to add product", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
         }
     };
 
@@ -48,6 +124,7 @@ const AddProduct: React.FC = () => {
 
     return (
         <div className="container mx-auto p-4">
+            <ToastContainer />
             <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-bold mb-6 text-gray-800">Додати новий товар</h2>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">

@@ -67,15 +67,6 @@ const Basket = () => {
         }
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        try {
-            // Код для відправки замовлення
-        } catch (error) {
-            console.error('Error during form submission:', error);
-        }
-    };
 
     if (loading) {
         return <Loader />;
@@ -88,7 +79,18 @@ const Basket = () => {
                 <div className="container mx-auto flex flex-col gap-6 py-6">
                     {products.length === 0 ? (
                         <p>
-                            Товарів немає. <Link href="/shop/all/1">Перейти в магазин</Link>.
+                            <div className="flex flex-col items-center justify-center h-full text-center pt-[100px]">
+                                <h2 className="text-2xl font-bold mb-4">У вас немає товарів</h2>
+                                <p className="text-gray-700 mb-4">Здається, ви ще не додали жоден товар до кошика.</p>
+                                <Link href={"/shop/all/1"}>
+                                    <button
+                                        className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                                    >
+                                        Перейти до магазину
+                                    </button>
+                                </Link>
+
+                            </div>
                         </p>
                     ) : (
                         <>

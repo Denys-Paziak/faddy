@@ -105,6 +105,8 @@ export default function Page({ params }: { params: any }) {
         }
     }
 
+    console.log(description)
+
     return (
         <>
             <Header />
