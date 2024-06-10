@@ -61,11 +61,19 @@ export default function Page({ params }: { params: any }) {
 
     const handleAddToCart = async () => {
         try {
-            if (product && product.id) {
-                const productId: any = product.id;
+            if (product && product.id && storedToken) {
+                const productId: string = product.id;
                 const size = sizes[sizeActive];
 
-                await addToCart(productId, count, size, parseFloat(product.price.split(" ")[0]), parseFloat(product.sale.split(" ")[0]), JSON.parse(product.images)[0], storedToken);
+                await addToCart(
+                    productId,
+                    count,
+                    size,
+                    parseFloat(product.price.split(" ")[0]),
+                    parseFloat(product.sale.split(" ")[0]),
+                    JSON.parse(product.images)[0],
+                    storedToken
+                );
 
                 toast.success('Товар додано в кошик', {
                     position: "bottom-right",
@@ -77,6 +85,8 @@ export default function Page({ params }: { params: any }) {
                     progress: undefined,
                     theme: "dark",
                 });
+            } else {
+                throw new Error("Token is missing or product ID is invalid");
             }
         } catch (error) {
             console.error('Помилка при додаванні товару в кошик:', error);
