@@ -1,5 +1,5 @@
 const axios = require('axios');
-const serverUrl = "http://localhost:3000";
+const serverUrl = "http://localhost:3000 ";
 
 class DataFetcher {
     async fetchData(route) {

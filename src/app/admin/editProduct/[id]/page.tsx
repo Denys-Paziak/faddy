@@ -6,7 +6,13 @@ import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
 
-const EditProduct: React.FC<{ productId: string, params: { id: string } }> = ({ params, productId }) => {
+interface EditProductProps {
+    params: {
+        id: string;
+    };
+}
+
+const EditProduct: React.FC<EditProductProps> = ({ params }) => {
     const router = useRouter();
     const [name, setName] = useState("");
     const [images, setImages] = useState<File[]>([]);
