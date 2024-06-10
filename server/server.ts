@@ -1,16 +1,17 @@
-const axios = require('axios');
-const serverUrl = "http://localhost:3000 ";
+import axios, { AxiosResponse, AxiosError } from 'axios';
+
+const serverUrl = "http://localhost:3000";
 
 class DataFetcher {
-    async fetchData(route) {
+    async fetchData(route: string): Promise<any> {
         const url = serverUrl + route;
         try {
             const start = performance.now();
-            const response = await axios.get(url);
+            const response: AxiosResponse = await axios.get(url);
             const end = performance.now();
             console.log(`Запит до ${route} зайняв ${end - start} мс`);
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error(`Error fetching data from ${route}:`, error.response?.data || error.message);
                 throw new Error(`Error fetching data from ${route}: ${error.response?.data || error.message}`);
@@ -20,11 +21,11 @@ class DataFetcher {
         }
     }
 
-    fetchProducts() {
+    fetchProducts(): Promise<any> {
         return this.fetchData('/products');
     }
 
-    async addToWishlist(productId, token) {
+    async addToWishlist(productId: number, token: string): Promise<void> {
         const url = serverUrl + "/like";
         const axiosConfig = {
             headers: {
@@ -34,9 +35,9 @@ class DataFetcher {
         };
 
         try {
-            const response = await axios.post(url, { productId }, axiosConfig);
+            const response: AxiosResponse = await axios.post(url, { productId }, axiosConfig);
             console.log('Лайк успішно додано:', response.data);
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при додаванні лайка:', error.response?.data?.error || error.message);
             } else {
@@ -45,7 +46,7 @@ class DataFetcher {
         }
     }
 
-    async getLikes(token) {
+    async getLikes(token: string): Promise<any> {
         const url = serverUrl + "/user_likes";
         const axiosConfig = {
             headers: {
@@ -55,9 +56,9 @@ class DataFetcher {
         };
 
         try {
-            const response = await axios.get(url, axiosConfig);
+            const response: AxiosResponse = await axios.get(url, axiosConfig);
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при отриманні лайків:', error.response?.data?.error || error.message);
             } else {
@@ -67,7 +68,7 @@ class DataFetcher {
         }
     }
 
-    async addToCart(productId, quantity, size, price, sale, image, token) {
+    async addToCart(productId: number, quantity: number, size: string, price: number, sale: number, image: string, token: string): Promise<void> {
         const url = serverUrl + "/basket/cart";
         const axiosConfig = {
             headers: {
@@ -86,9 +87,9 @@ class DataFetcher {
         };
 
         try {
-            const response = await axios.post(url, requestData, axiosConfig);
+            const response: AxiosResponse = await axios.post(url, requestData, axiosConfig);
             console.log('Товар успішно додано до кошика:', response.data);
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при додаванні товару до кошика:', error.response?.data?.error || error.message);
             } else {
@@ -97,7 +98,7 @@ class DataFetcher {
         }
     }
 
-    async removeFromCart(token, productId) {
+    async removeFromCart(token: string, productId: number): Promise<void> {
         const url = serverUrl + "/basket/cart";
         const axiosConfig = {
             headers: {
@@ -110,9 +111,9 @@ class DataFetcher {
         };
 
         try {
-            const response = await axios.delete(url, axiosConfig);
+            const response: AxiosResponse = await axios.delete(url, axiosConfig);
             console.log('Товар успішно видалено з кошика:', response.data);
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при видаленні товару з кошика:', error.response?.data?.error || error.message);
             } else {
@@ -121,7 +122,7 @@ class DataFetcher {
         }
     }
 
-    async getUserCart(token) {
+    async getUserCart(token: string): Promise<any> {
         const url = serverUrl + "/basket/user_cart";
         const axiosConfig = {
             headers: {
@@ -131,9 +132,9 @@ class DataFetcher {
         };
 
         try {
-            const response = await axios.get(url, axiosConfig);
+            const response: AxiosResponse = await axios.get(url, axiosConfig);
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при отриманні товарів:', error.response?.data?.error || error.message);
             } else {
@@ -143,12 +144,12 @@ class DataFetcher {
         }
     }
 
-    async fetchProductById(productId) {
+    async fetchProductById(productId: number): Promise<any> {
         const url = serverUrl + `/product/${productId}`;
         try {
-            const response = await axios.get(url);
+            const response: AxiosResponse = await axios.get(url);
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error(`Помилка при отриманні даних для товару з ID ${productId}:`, error.response?.data || error.message);
                 throw new Error(`Помилка при отриманні даних для товару з ID ${productId}: ${error.response?.data || error.message}`);
@@ -158,9 +159,9 @@ class DataFetcher {
         }
     }
 
-    async login(formData) {
+    async login(formData: { email: string, password: string }): Promise<AxiosResponse> {
         try {
-            const response = await axios.post(`${serverUrl}/auth/login/`, {
+            const response: AxiosResponse = await axios.post(`${serverUrl}/auth/login/`, {
                 username: formData.email,
                 password: formData.password,
             }, {
@@ -169,7 +170,7 @@ class DataFetcher {
                 },
             });
             return response;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при вході:', error.response?.data?.error || error.message);
             } else {
@@ -179,9 +180,9 @@ class DataFetcher {
         }
     }
 
-    async register(formData) {
+    async register(formData: { email: string, password: string }): Promise<AxiosResponse> {
         try {
-            const response = await axios.post(`${serverUrl}/auth/register/`, {
+            const response: AxiosResponse = await axios.post(`${serverUrl}/auth/register/`, {
                 username: formData.email,
                 password: formData.password,
             }, {
@@ -190,7 +191,7 @@ class DataFetcher {
                 },
             });
             return response;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при реєстрації:', error.response?.data?.error || error.message);
             } else {
@@ -200,9 +201,9 @@ class DataFetcher {
         }
     }
 
-    async sendMail(message, subject) {
+    async sendMail(message: string, subject: string): Promise<AxiosResponse> {
         try {
-            const response = await axios.post(`${serverUrl}/email/send-email`, {
+            const response: AxiosResponse = await axios.post(`${serverUrl}/email/send-email`, {
                 message,
                 subject,
             }, {
@@ -211,7 +212,7 @@ class DataFetcher {
                 },
             });
             return response;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при відправці пошти:', error.response?.data?.error || error.message);
             } else {
@@ -221,7 +222,7 @@ class DataFetcher {
         }
     }
 
-    async admin(token) {
+    async admin(token: string): Promise<any> {
         const axiosConfig = {
             headers: {
                 'Content-Type': 'application/json',
@@ -229,14 +230,14 @@ class DataFetcher {
             }
         };
         try {
-            const response = await axios.get(`${serverUrl}/admin`, axiosConfig);
+            const response: AxiosResponse = await axios.get(`${serverUrl}/admin`, axiosConfig);
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             return { status: 500 };
         }
     }
 
-    async getAdminUsers(token) {
+    async getAdminUsers(token: string): Promise<any> {
         const axiosConfig = {
             headers: {
                 'Content-Type': 'application/json',
@@ -244,9 +245,9 @@ class DataFetcher {
             }
         };
         try {
-            const response = await axios.get(`${serverUrl}/admin/users`, axiosConfig);
+            const response: AxiosResponse = await axios.get(`${serverUrl}/admin/users`, axiosConfig);
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при отриманні даних користувачів адміністратора:', error.response?.data?.error || error.message);
             } else {
@@ -256,7 +257,7 @@ class DataFetcher {
         }
     }
 
-    async addProduct(token, productData) {
+    async addProduct(token: string, productData: FormData): Promise<any> {
         const url = `${serverUrl}/admin/products`;
         const axiosConfig = {
             headers: {
@@ -266,9 +267,9 @@ class DataFetcher {
         };
 
         try {
-            const response = await axios.post(url, productData, axiosConfig);
+            const response: AxiosResponse = await axios.post(url, productData, axiosConfig);
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при додаванні товару:', error.response?.data?.error || error.message);
             } else {
@@ -278,7 +279,7 @@ class DataFetcher {
         }
     }
 
-    async updateProduct(token, productId, productData) {
+    async updateProduct(token: string, productId: number, productData: FormData): Promise<any> {
         const url = `${serverUrl}/admin/products/${productId}`;
         const axiosConfig = {
             headers: {
@@ -288,9 +289,9 @@ class DataFetcher {
         };
 
         try {
-            const response = await axios.put(url, productData, axiosConfig);
+            const response: AxiosResponse = await axios.put(url, productData, axiosConfig);
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при оновленні товару:', error.response?.data?.error || error.message);
             } else {
@@ -300,7 +301,7 @@ class DataFetcher {
         }
     }
 
-    async deleteProduct(token, productId) {
+    async deleteProduct(token: string, productId: number): Promise<any> {
         const url = `${serverUrl}/admin/products/${productId}`;
         const axiosConfig = {
             headers: {
@@ -309,9 +310,9 @@ class DataFetcher {
         };
 
         try {
-            const response = await axios.delete(url, axiosConfig);
+            const response: AxiosResponse = await axios.delete(url, axiosConfig);
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при видаленні товару:', error.response?.data?.error || error.message);
             } else {
@@ -321,7 +322,7 @@ class DataFetcher {
         }
     }
 
-    async placeOrder(orderData) {
+    async placeOrder(orderData: any): Promise<any> {
         const storedToken = localStorage.getItem("token");
         const axiosConfig = {
             headers: {
@@ -331,9 +332,9 @@ class DataFetcher {
         };
 
         try {
-            const response = await axios.post(`${serverUrl}/basket/place-order`, orderData, axiosConfig);
+            const response: AxiosResponse = await axios.post(`${serverUrl}/basket/place-order`, orderData, axiosConfig);
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при розміщенні замовлення:', error.response?.data?.error || error.message);
             } else {
@@ -343,7 +344,7 @@ class DataFetcher {
         }
     }
 
-    async getOrders(token) {
+    async getOrders(token: string): Promise<any> {
         const axiosConfig = {
             headers: {
                 'Content-Type': 'application/json',
@@ -351,9 +352,9 @@ class DataFetcher {
             }
         };
         try {
-            const response = await axios.get(`${serverUrl}/orders`, axiosConfig);
+            const response: AxiosResponse = await axios.get(`${serverUrl}/orders`, axiosConfig);
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при отриманні замовлень:', error.response?.data?.error || error.message);
             } else {
@@ -363,7 +364,7 @@ class DataFetcher {
         }
     }
 
-    async updateOrderStatus(orderId, status, token) {
+    async updateOrderStatus(orderId: number, status: string, token: string): Promise<any> {
         const axiosConfig = {
             headers: {
                 'Content-Type': 'application/json',
@@ -371,9 +372,9 @@ class DataFetcher {
             }
         };
         try {
-            const response = await axios.put(`${serverUrl}/orders/${orderId}/status`, { status }, axiosConfig);
+            const response: AxiosResponse = await axios.put(`${serverUrl}/orders/${orderId}/status`, { status }, axiosConfig);
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при оновленні статусу замовлення:', error.response?.data?.error || error.message);
             } else {
@@ -383,7 +384,7 @@ class DataFetcher {
         }
     }
 
-    async deleteOrder(orderId, token) {
+    async deleteOrder(orderId: number, token: string): Promise<any> {
         const axiosConfig = {
             headers: {
                 'Content-Type': 'application/json',
@@ -391,9 +392,9 @@ class DataFetcher {
             }
         };
         try {
-            const response = await axios.delete(`${serverUrl}/orders/${orderId}`, axiosConfig);
+            const response: AxiosResponse = await axios.delete(`${serverUrl}/orders/${orderId}`, axiosConfig);
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при видаленні замовлення:', error.response?.data?.error || error.message);
             } else {
@@ -403,8 +404,7 @@ class DataFetcher {
         }
     }
 
-    // Додавання методів для видалення користувача та зміни пароля користувача
-    async deleteUser(token, userId) {
+    async deleteUser(token: string, userId: number): Promise<any> {
         const url = `${serverUrl}/admin/users/${userId}`;
         const axiosConfig = {
             headers: {
@@ -413,9 +413,9 @@ class DataFetcher {
         };
 
         try {
-            const response = await axios.delete(url, axiosConfig);
+            const response: AxiosResponse = await axios.delete(url, axiosConfig);
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при видаленні користувача:', error.response?.data?.error || error.message);
             } else {
@@ -425,7 +425,7 @@ class DataFetcher {
         }
     }
 
-    async changeUserPassword(token, userId, newPassword) {
+    async changeUserPassword(token: string, userId: number, newPassword: string): Promise<any> {
         const url = `${serverUrl}/admin/users/${userId}/password`;
         const axiosConfig = {
             headers: {
@@ -434,9 +434,9 @@ class DataFetcher {
         };
 
         try {
-            const response = await axios.put(url, { newPassword }, axiosConfig);
+            const response: AxiosResponse = await axios.put(url, { newPassword }, axiosConfig);
             return response.data;
-        } catch (error) {
+        } catch (error: unknown) {
             if (axios.isAxiosError(error)) {
                 console.error('Помилка при зміні пароля користувача:', error.response?.data?.error || error.message);
             } else {

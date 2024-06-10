@@ -24,6 +24,10 @@ const Orders = () => {
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
 
+        if (!storedToken) {
+            throw new Error("Token is missing");
+        }
+
         dataFeatcher.getOrders(storedToken).then(data => {
             setOrders(data);
         });
@@ -31,6 +35,11 @@ const Orders = () => {
 
     const handleStatusChange = async (orderId: number, status: string) => {
         const storedToken = localStorage.getItem("token");
+
+        if (!storedToken) {
+            throw new Error("Token is missing");
+        }
+
         try {
             await dataFeatcher.updateOrderStatus(orderId, status, storedToken);
             setOrders(orders.map(order => order.id === orderId ? { ...order, status } : order));
@@ -41,6 +50,11 @@ const Orders = () => {
 
     const handleDelete = async (orderId: number) => {
         const storedToken = localStorage.getItem("token");
+
+        if (!storedToken) {
+            throw new Error("Token is missing");
+        }
+
         try {
             await dataFeatcher.deleteOrder(orderId, storedToken);
             setOrders(orders.filter(order => order.id !== orderId));

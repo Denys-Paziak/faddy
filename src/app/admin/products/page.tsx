@@ -30,6 +30,10 @@ export default function Admin() {
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
 
+        if (!storedToken) {
+            throw new Error("Token is missing");
+        }
+
         dataFeatcher.admin(storedToken).then(data => {
             console.log(data.categoryCounts);
             setAllCategory(data.categoryCounts);
@@ -39,6 +43,11 @@ export default function Admin() {
 
     const handleDelete = async (productId: number) => {
         const storedToken = localStorage.getItem("token");
+
+        if (!storedToken) {
+            throw new Error("Token is missing");
+        }
+
 
         try {
             await dataFeatcher.deleteProduct(storedToken, productId);

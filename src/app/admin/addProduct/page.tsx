@@ -75,6 +75,10 @@ const AddProduct: React.FC = () => {
 
         const storedToken = localStorage.getItem("token");
 
+        if (!storedToken) {
+            throw new Error("Token is missing");
+        }
+
         let descArr = description.split(",");
 
         const formData = new FormData();

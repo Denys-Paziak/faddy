@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 interface EditProductProps {
     params: {
-        id: string;
+        id: number;
     };
 }
 
@@ -94,6 +94,10 @@ const EditProduct: React.FC<EditProductProps> = ({ params }) => {
         }
 
         const storedToken = localStorage.getItem("token");
+
+        if (!storedToken) {
+            throw new Error("Token is missing");
+        }
 
         let descArr = description.split(",");
 

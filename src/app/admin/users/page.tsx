@@ -23,6 +23,10 @@ export default function Admin() {
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
 
+        if (!storedToken) {
+            throw new Error("Token is missing");
+        }
+
         dataFeatcher.getAdminUsers(storedToken).then(data => {
             setUsers(data);
             console.log(data);
@@ -31,6 +35,12 @@ export default function Admin() {
 
     const handleDelete = async (userId: number) => {
         const storedToken = localStorage.getItem("token");
+
+
+        if (!storedToken) {
+            throw new Error("Token is missing");
+        }
+
 
         try {
             await dataFeatcher.deleteUser(storedToken, userId);
@@ -62,6 +72,13 @@ export default function Admin() {
 
     const handleChangePassword = async (userId: number) => {
         const storedToken = localStorage.getItem("token");
+
+        if (!storedToken) {
+            throw new Error("Token is missing");
+        }
+
+
+
         const newPassword = prompt("Enter new password");
 
         if (newPassword) {
