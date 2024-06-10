@@ -62,7 +62,7 @@ export default function Page({ params }: { params: any }) {
     const handleAddToCart = async () => {
         try {
             if (product && product.id && storedToken) {
-                const productId: string = product.id;
+                const productId: number = parseInt(product.id, 10); // Конвертація productId до числа
                 const size = sizes[sizeActive];
 
                 await addToCart(
@@ -114,8 +114,6 @@ export default function Page({ params }: { params: any }) {
             console.error("Error parsing description JSON:", error);
         }
     }
-
-    console.log(description)
 
     return (
         <>
