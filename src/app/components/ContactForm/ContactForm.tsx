@@ -1,5 +1,7 @@
 "use client"
+import { CLIENT_STATIC_FILES_RUNTIME_POLYFILLS_SYMBOL } from 'next/dist/shared/lib/constants';
 import React, { useState } from 'react';
+import DataFetcher from '../../../../server/server';
 
 const ContactForm = () => {
     const [formData, setFormData] = useState({
@@ -18,30 +20,22 @@ const ContactForm = () => {
         message: '',
     });
 
-    const validateEmail = (email: string) => {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-    };
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleInputChange = (e: any) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
         setValidationErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        // Валідація
+        // Перевірка на помилки введення
         const errors: any = {};
-
         if (!formData.name) {
             errors.name = "Ім'я є обов'язковим";
         }
         if (!formData.email) {
             errors.email = 'Email є обов\'язковим';
-        } else if (!validateEmail(formData.email)) {
-            errors.email = 'Некоректний формат Email';
         }
         if (!formData.phoneNumber) {
             errors.phoneNumber = 'Номер телефону є обов\'язковим';
@@ -58,18 +52,13 @@ const ContactForm = () => {
         }
 
         try {
-            const response = await fetch('http://2823362.ni514080.web.hosting-test.net/mail.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams(formData as any),
-            });
+            const dataFetcher = new DataFetcher();
 
-            const result = await response.text();
+            // Використання dataFetcher для відправлення SMS
+            const response = await dataFetcher.sendMail(formData.message, formData.phoneNumber);
 
-            if (response.ok) {
-                setSuccessMessage(result);
+            if (response.status === 200) {
+                setSuccessMessage('Повідомлення успішно відправлене');
                 setErrorMessage('');
                 setFormData({
                     name: '',
@@ -78,15 +67,15 @@ const ContactForm = () => {
                     message: '',
                 });
             } else {
-                setErrorMessage(result);
-                setSuccessMessage('');
+                throw new Error('Response status is not 200');
             }
-        } catch (error: any) {
+        } catch (error) {
             console.error('Помилка відправлення форми:', error);
             setErrorMessage('Виникла помилка під час відправлення форми.');
             setSuccessMessage('');
         }
     };
+
 
     return (
         <form onSubmit={handleSubmit}>
