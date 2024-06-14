@@ -30,34 +30,15 @@ const EditProduct: React.FC<EditProductProps> = ({ params }) => {
             setName(product.name);
             setPrice(product.price);
             setSale(product.sale);
-            setDescription(product.description);
+
             setCategory(product.category);
             setImagePreviews(JSON.parse(product.images));
 
 
             // Прибираємо зовнішні квадратні дужки та розбиваємо по комах, очищаємо від зайвих пробілів і лапок
-            const cleanData = product.description.replace(/^\[|\]$/g, '').split(',').map((s: any) => s.trim().replace(/^"|"$/g, ''));
+            const cleanData = product.description.replace(/\\\"/g, '');
 
-            // Об'єднуємо строки, які були неправильно розділені через кому в середині
-            const finalData = [];
-            let currentLine = '';
-
-            cleanData.forEach((line: any) => {
-                if (line.match(/ : /)) {
-                    if (currentLine) {
-                        finalData.push(currentLine);
-                    }
-                    currentLine = line;
-                } else {
-                    currentLine += line;
-                }
-            });
-            finalData.push(currentLine); // Додаємо останню строку
-
-            // Форматуємо дані у вигляді 'Властивість: значення, наступна властивість: значення'
-            const formattedData = finalData.map(item => item.replace(/ : /g, ': ')).join(', ');
-
-            console.log(formattedData);
+            console.log(cleanData);
         };
 
         fetchProduct();
