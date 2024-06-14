@@ -18,7 +18,6 @@ const EmailSection = () => {
         try {
             const res = await dataFetcher.sendMail(`Новий підписник: ${email}`, "Підписка");
             if (res.status === 200) {
-
                 toast.success('Спасибі за підписку', {
                     position: "bottom-right",
                     autoClose: 5000,
@@ -31,16 +30,27 @@ const EmailSection = () => {
                 });
                 setEmail('');
             } else {
-                toast.error("Сталася помилка, перевірте дані", {
+                toast.error('Сталася помилка, перевірте дані', {
                     position: "bottom-right",
-                    hideProgressBar: true,
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
                     theme: "dark",
                 });
             }
         } catch (error) {
             console.error('Помилка відправлення пошти:', error);
-            toast.error('Виникла помилка під час відправлення пошти.', {
+            toast.error('Сталася помилка, перевірте дані', {
                 position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
                 theme: "dark",
             });
         } finally {
