@@ -51,11 +51,12 @@ const ContactForm = () => {
             return;
         }
 
+        const fullMessage = `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phoneNumber}\nMessage: ${formData.message}`;
         try {
             const dataFetcher = new DataFetcher();
 
             // Використання dataFetcher для відправлення SMS
-            const response = await dataFetcher.sendMail(formData.message, formData.phoneNumber);
+            const response = await dataFetcher.sendMail(fullMessage, formData.phoneNumber);
 
             if (response.status === 200) {
                 setSuccessMessage('Повідомлення успішно відправлене');
@@ -112,6 +113,7 @@ const ContactForm = () => {
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
             />
+
             {validationErrors.phoneNumber && <p className="text-red-500">{validationErrors.phoneNumber}</p>}
 
             <h2>Ваше повідомлення</h2>
