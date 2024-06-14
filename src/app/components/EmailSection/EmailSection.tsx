@@ -1,4 +1,5 @@
 "use client"
+
 import Image from "next/image";
 import React, { useState } from 'react';
 import DataFetcher from "../../../../server/server";
@@ -34,12 +35,6 @@ const EmailSection = () => {
             console.error('Помилка відправлення пошти:', error);
             toast.error('Виникла помилка під час відправлення пошти.', {
                 position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
                 theme: "dark",
             });
         } finally {
