@@ -57,7 +57,7 @@ export const Pagination: React.FC<PaginationProps> = ({ numPage, activePage, cat
                 {visiblePageNumbers.map((el) => {
                     if (el == activePage) {
                         return <li key={uuidv4() + el} >
-                            <Link href={`/shop/${category}/${el}`} className={`flex bg-sky-700 text-white items-center justify-center px-4 h-10 leading-tight border ${el === activePage ? 'text-white bg-black' : 'text-gray-500 bg-white '} border-gray-300`}>
+                            <Link href={`/shop/${category}/${el}`} className={`flex bg-sky-700 text-white items-center justify-center px-4 h-10 leading-tight border ${el === activePage ? 'text-black bg-black' : 'text-gray-500 bg-white '} border-gray-300`}>
                                 {el}
                             </Link>
                         </li>
