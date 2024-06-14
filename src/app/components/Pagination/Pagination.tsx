@@ -57,13 +57,13 @@ export const Pagination: React.FC<PaginationProps> = ({ numPage, activePage, cat
                 {visiblePageNumbers.map((el) => {
                     if (el == activePage) {
                         return <li key={uuidv4() + el} >
-                            <Link href={`/shop/${category}/${el}`} className={`flex bg-sky-700 text-white items-center justify-center px-4 h-10 leading-tight border ${el === activePage ? 'text-black bg-black' : 'text-gray-500 bg-white '} border-gray-300`}>
+                            <Link href={`/shop/${category}/${el}`} className={`flex bg-sky-700 text-white items-center justify-center px-4 h-10 leading-tight border  text-black bg-black border-gray-300`}>
                                 {el}
                             </Link>
                         </li>
                     } else {
                         return <li key={uuidv4() + el}>
-                            <Link href={`/shop/${category}/${el}`} className={`flex items-center justify-center px-4 h-10 leading-tight border ${el === activePage ? 'text-black bg-black' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700'} border-gray-300`}>
+                            <Link href={`/shop/${category}/${el}`} className={`flex items-center justify-center px-4 h-10 leading-tight border text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 border-gray-300`}>
                                 {el}
                             </Link>
                         </li>
