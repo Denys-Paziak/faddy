@@ -36,7 +36,7 @@ const EditProduct: React.FC<EditProductProps> = ({ params }) => {
 
 
             // Прибираємо зовнішні квадратні дужки та розбиваємо по комах, очищаємо від зайвих пробілів і лапок
-            const cleanData = product.description.replace(/^\[|\]$/g, '').split('",').map((s: any) => s.trim().replace(/^"|"$/g, ''));
+            const cleanData = product.description.replace(/^\[|\]$/g, '').split(',').map((s: any) => s.trim().replace(/^"|"$/g, ''));
 
             // Об'єднуємо строки, які були неправильно розділені через кому в середині
             const finalData = [];
