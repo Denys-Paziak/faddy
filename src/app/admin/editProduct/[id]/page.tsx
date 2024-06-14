@@ -36,9 +36,9 @@ const EditProduct: React.FC<EditProductProps> = ({ params }) => {
 
 
             // Прибираємо зовнішні квадратні дужки та розбиваємо по комах, очищаємо від зайвих пробілів і лапок
-            const cleanData = product.description.replace(/\\\"/g, '');
-
+            const cleanData = product.description.replace(/[\[\]\\"]+/g, '');
             console.log(cleanData);
+            setDescription(cleanData);
         };
 
         fetchProduct();
