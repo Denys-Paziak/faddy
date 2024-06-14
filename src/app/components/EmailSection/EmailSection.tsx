@@ -19,24 +19,14 @@ const EmailSection = () => {
             if (res.status === 200) {
                 toast.success("Спасибі за підписку", {
                     position: "bottom-right",
-                    autoClose: 5000,
                     hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
                     theme: "dark",
                 });
                 setEmail('');
             } else {
                 toast.error("Сталася помилка, перевірте дані", {
                     position: "bottom-right",
-                    autoClose: 5000,
                     hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
                     theme: "dark",
                 });
             }
