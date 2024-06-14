@@ -63,7 +63,7 @@ export const Pagination: React.FC<PaginationProps> = ({ numPage, activePage, cat
                         </li>
                     } else {
                         return <li key={uuidv4() + el}>
-                            <Link href={`/shop/${category}/${el}`} className={`flex items-center justify-center px-4 h-10 leading-tight border ${el === activePage ? 'text-white bg-black' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700'} border-gray-300`}>
+                            <Link href={`/shop/${category}/${el}`} className={`flex items-center justify-center px-4 h-10 leading-tight border ${el === activePage ? 'text-black bg-black' : 'text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700'} border-gray-300`}>
                                 {el}
                             </Link>
                         </li>

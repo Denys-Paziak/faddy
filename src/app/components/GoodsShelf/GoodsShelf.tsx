@@ -38,7 +38,6 @@ export const GoodsShelf: React.FC<GoodsShelfProps> = ({ limit, numCol, page, cat
 
     if (page > numPage) {
         return <>
-            <h2 className='text-4xl'>Щось пішло не так</h2>
             <div className='my-4'>
                 <Link href={`/shop/${categoryFilter}/1`} >
                     Перейти на стоірнку з товарами
