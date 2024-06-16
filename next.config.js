@@ -2,7 +2,7 @@
 
 module.exports = {
     images: {
-        domains: ['ager.ua', "images.pexels.com", "localhost"],
+        domains: ['ager.ua', "images.pexels.com", "localhost", "famdy-back.vercel.app"],
 
     },
 };

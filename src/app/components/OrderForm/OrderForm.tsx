@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import DataFetcher from "../../../../server/server";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const OrderForm = ({ totalAmount }: any) => {
     const [fullName, setFullName] = useState("");
@@ -28,10 +30,20 @@ const OrderForm = ({ totalAmount }: any) => {
 
         try {
             const response = await dataFeatcher.placeOrder(orderData);
-            // Redirect to payment page if Fondy
+
             if (response.paymentUrl) {
-                window.location.href = response.paymentUrl;
+                toast.success('Замовлення в обробці', {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
             }
+
         } catch (error) {
             console.error("Failed to place order", error);
         }
@@ -39,6 +51,7 @@ const OrderForm = ({ totalAmount }: any) => {
 
     return (
         <div className="container mx-auto p-4">
+            <ToastContainer />
             <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-bold mb-6 text-gray-800">Оформлення замовлення</h2>
                 <form onSubmit={handleSubmit}>
@@ -110,7 +123,7 @@ const OrderForm = ({ totalAmount }: any) => {
                             className="w-full p-2 border border-gray-300 rounded"
                             required
                         >
-                            <option value="fondy">Fondy</option>
+                            <option value="fondy">Післяоплата</option>
                         </select>
                     </div>
                     <button

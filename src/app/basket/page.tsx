@@ -72,6 +72,8 @@ const Basket = () => {
         return <Loader />;
     }
 
+    console.log(products)
+
     return (
         <>
             <Header />

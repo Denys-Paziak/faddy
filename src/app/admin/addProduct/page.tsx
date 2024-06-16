@@ -24,8 +24,8 @@ const AddProduct: React.FC = () => {
     };
 
     const validateFields = () => {
-        if (!name || !price || !category || images.length === 0) {
-            toast.error("Please fill in all required fields and upload at least one image.", {
+        if (!name || !price || !category) {
+            toast.error("Please fill in all required fields", {
                 position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: true,
