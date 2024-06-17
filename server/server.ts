@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
-const serverUrl = "http://localhost:3000";
+const serverUrl = "https://famdy-back.vercel.app";
 
 class DataFetcher {
     async fetchData(route: string): Promise<any> {
