@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
-const serverUrl = "https://famdy-back.vercel.app";
+const serverUrl = "http://localhost:3000";
 
 class DataFetcher {
     async fetchData(route: string): Promise<any> {
@@ -109,6 +109,7 @@ class DataFetcher {
                 productId
             }
         };
+
 
         try {
             const response: AxiosResponse = await axios.delete(url, axiosConfig);

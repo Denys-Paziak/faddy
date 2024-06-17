@@ -14,7 +14,8 @@ interface Product {
     price: string;
     image: string;
     size: string;
-    quantity: number;
+    quantity: number,
+    product_id: number
 }
 
 const Basket = () => {
@@ -60,7 +61,8 @@ const Basket = () => {
         try {
             if (storedToken) {
                 await dataFetcher.removeFromCart(storedToken, productId);
-                setProducts((prevProducts) => prevProducts.filter((product) => product.id !== productId));
+                console.log("remover")
+                setProducts((prevProducts) => prevProducts.filter((product) => product.product_id !== productId));
             }
         } catch (error) {
             console.error('Error removing product from cart:', error);
@@ -110,7 +112,7 @@ const Basket = () => {
                                     </div>
                                     <div className="flex gap-2 ml-auto">
                                         <div className="rounded-[50%] hover:bg-black hover:text-white transition duration-150 ease-out cursor-pointer">
-                                            <CiCircleRemove className="w-[30px] h-[30px]" onClick={() => removeFromCart(el.id)} />
+                                            <CiCircleRemove className="w-[30px] h-[30px]" onClick={() => removeFromCart(el.product_id)} />
                                         </div>
                                     </div>
                                 </div>
