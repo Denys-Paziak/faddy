@@ -12,7 +12,6 @@ interface Product {
     images: string[];
     name: string;
     price: string;
-    // Add other properties of your 'el' object here
 }
 
 const Likes = () => {
@@ -45,8 +44,6 @@ const Likes = () => {
                 .finally(() => {
                     setLoading(false);
                 });
-        } else {
-            setLoading(false);
         }
     }, []);
 
