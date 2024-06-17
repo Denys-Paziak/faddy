@@ -24,27 +24,25 @@ const Likes = () => {
         const dataFetcher = new DataFetcher();
         const storedToken = localStorage.getItem("token");
 
-        // Отримання списку товарів
-        dataFetcher.fetchProducts()
-            .then((productsData: any) => {
+        const fetchData = async () => {
+            try {
+                // Отримання списку товарів
+                const productsData = await dataFetcher.fetchProducts();
                 setProducts(productsData);
-            })
-            .catch((error: any) => {
-                console.error('Error fetching products:', error);
-            });
 
-        // Отримання списку лайків для поточного користувача
-        if (storedToken) {
-            dataFetcher.getLikes(storedToken).then((likesData: any) => {
-                setUserLikes(likesData.map((el: any) => el.product_id));
-            })
-                .catch((error: any) => {
-                    console.error('Error fetching user likes:', error);
-                })
-                .finally(() => {
-                    setLoading(false);
-                });
-        }
+                // Отримання списку лайків для поточного користувача
+                if (storedToken) {
+                    const likesData = await dataFetcher.getLikes(storedToken);
+                    setUserLikes(likesData.map((el: any) => el.product_id));
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
     }, []);
 
     const handleRemoveLike = async (productId: number) => {
