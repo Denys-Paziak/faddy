@@ -78,8 +78,8 @@ export default function Home() {
                 <Title>Категорії</Title>
                 <div className="category-grid gap-10">
                     <Link href={"/shop/clothes/1"} className="category-grid-item1 category-item flex items-center justify-center hover:text-amber-300">
-                        <h2 className={"text-3xl font-bold uppercase"}>Одяг</h2>
-                        <h2 className={"category-item__hover-text text-9xl font-bold text-white"}>Одяг</h2>
+                        <h2 className={"text-3xl font-bold uppercase"}>Верхній одяг</h2>
+                        <h2 className={"category-item__hover-text text-9xl font-bold text-white"}>Верхній одяг</h2>
                         <Image src={"/img/category/clothes.jpg"} width={1000} height={1000} alt={"category image"} />
                     </Link>
                     <Link href={"/shop/footwear/1"} className="category-grid-item2 category-item flex items-center justify-center hover:text-amber-300">
