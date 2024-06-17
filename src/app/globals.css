@@ -149,9 +149,10 @@ nav a:hover:before {
 }
 
 @media screen and (max-width: 640px) {
-    .logo {
-      display: none;
-    }
+  .logo {
+    display: none;
+  }
+
   .category-grid {
     grid-template-columns: repeat(1, 1fr);
   }
@@ -160,4 +161,27 @@ nav a:hover:before {
     padding-right: 20px;
     padding-left: 20px;
   }
+}
+
+
+@media screen and (max-width: 430px) {
+  .mob-header {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .mob-header .mw,
+  .mob-header nav {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .mob-header .mw div {
+    width: auto;
+  }
+}
+
+.adminTable {
+  text-wrap: nowrap;
 }

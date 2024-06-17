@@ -66,10 +66,10 @@ const Orders = () => {
     return (
         <div className="flex">
             <Sidebar />
-            <div className="p-4 sm:ml-64 w-full">
-                <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <div className="overflow-x-auto max-h-96">
-                        <table className="w-full text-sm text-left text-gray-500 ">
+            <div className="p-4 sm:ml-64 max-w-[80%]">
+                <div className="relative overflow-x-hidden shadow-md sm:rounded-lg">
+                    <div className="overflow-x-auto max-h-96 ">
+                        <table className="adminTable w-full text-sm text-left text-gray-500 ">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr className="text-nowrap">
                                     <th scope="col" className="px-4 py-2">ID</th>
@@ -80,15 +80,14 @@ const Orders = () => {
                                     <th scope="col" className="px-4 py-2">Поштовий індекс</th>
                                     <th scope="col" className="px-4 py-2">Телефон</th>
                                     <th scope="col" className="px-4 py-2">Електронна пошта</th>
-                                    <th scope="col" className="px-4 py-2">Метод оплати</th>
-                                    <th scope="col" className="px-4 py-2">Статус</th>
+                                    <th scope="col" className="px-4 py-2">Статус замовлення</th>
                                     <th scope="col" className="px-4 py-2">Створено</th>
                                     <th scope="col" className="px-4 py-2">Дії</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {orders.map(order => (
-                                    <tr key={order.id} className="bg-white border-b hover:bg-gray-50">
+                                    <tr key={order.id} className=" bg-white border-b hover:bg-gray-50">
                                         <td className="px-4 py-2">{order.id}</td>
                                         <td className="px-4 py-2">{order.user_id}</td>
                                         <td className="px-4 py-2">{order.full_name}</td>
@@ -97,7 +96,6 @@ const Orders = () => {
                                         <td className="px-4 py-2">{order.postal_code}</td>
                                         <td className="px-4 py-2">{order.phone}</td>
                                         <td className="px-4 py-2">{order.email}</td>
-                                        <td className="px-4 py-2">{order.payment_method}</td>
                                         <td className="px-4 py-2">
                                             <select
                                                 value={order.status}

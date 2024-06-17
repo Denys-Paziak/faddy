@@ -25,10 +25,10 @@ export const Header: React.FC = () => {
     }
 
     return (
-        <header className="container mx-auto grid grid-cols-2 md:grid-cols-3 items-center pt-5 pb-5">
+        <header className="mob-header container mx-auto grid grid-cols-2 md:grid-cols-3 items-center pt-5 pb-5">
             <Nav />
             <Link href="/" className="logo text-3xl font-bold mx-auto">FAMDY</Link>
-            <div className="flex items-center gap-2 ml-auto">
+            <div className="mw flex items-center gap-2 ml-auto">
                 {token ? (
                     <>
                         <Link href="/likes">
@@ -41,7 +41,7 @@ export const Header: React.FC = () => {
                                 <SlBasket />
                             </div>
                         </Link>
-                        <div className='cursor-pointer text-[20px] p-2 rounded hover:bg-black hover:text-white' onClick={logOut}>
+                        <div className=' mw cursor-pointer text-[20px] p-2 rounded hover:bg-black hover:text-white' onClick={logOut}>
                             <IoLogOutOutline />
                         </div>
                     </>

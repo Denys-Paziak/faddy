@@ -18,8 +18,27 @@ const Register = () => {
         setFormData({ ...formData, [name]: value });
     };
 
+    const validateEmail = (email: string) => {
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+        return emailRegex.test(email);
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!validateEmail(formData.email)) {
+            toast.error('Некоректна адреса електронної пошти', {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return;
+        }
 
         if (formData.password.length < 8) {
             toast.error("Пароль має бути не менше 8 символів", {

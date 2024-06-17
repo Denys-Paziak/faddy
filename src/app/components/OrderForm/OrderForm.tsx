@@ -12,10 +12,122 @@ const OrderForm = ({ totalAmount }: any) => {
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [paymentMethod, setPaymentMethod] = useState("fondy");
-    const dataFeatcher = new DataFetcher();
+    const dataFetcher = new DataFetcher();
+
+    const validateEmail = (email: string) => {
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+        return emailRegex.test(email);
+    };
+
+
+    const validatePhone = (phone: string) => {
+        const phoneRegex = /^\+?\d{10,15}$/; // Проста перевірка для телефонів
+        return phoneRegex.test(phone);
+    };
+
+    const validatePostalCode = (postalCode: string) => {
+        const postalCodeRegex = /^\d{5}(?:[-\s]\d{4})?$/; // Перевірка для поштових індексів
+        return postalCodeRegex.test(postalCode);
+    };
+
+    const validateName = (name: string) => {
+        return name.length > 0;
+    };
+
+    const validateAddress = (address: string) => {
+        return address.length > 0;
+    };
+
+    const validateCity = (city: string) => {
+        return city.length > 0;
+    };
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+
+        if (!validateName(fullName)) {
+            toast.error("Некоректне ім'я", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return;
+        }
+
+        if (!validateAddress(address)) {
+            toast.error("Некоректна адреса", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return;
+        }
+
+        if (!validateCity(city)) {
+            toast.error("Некоректне місто", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return;
+        }
+
+        if (!validatePostalCode(postalCode)) {
+            toast.error("Некоректний поштовий індекс", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return;
+        }
+
+        if (!validatePhone(phone)) {
+            toast.error("Некоректний телефон", {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            toast.error('Некоректна адреса електронної пошти', {
+                position: "bottom-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return;
+        }
 
         const orderData = {
             fullName,
@@ -29,7 +141,7 @@ const OrderForm = ({ totalAmount }: any) => {
         };
 
         try {
-            const response = await dataFeatcher.placeOrder(orderData);
+            const response = await dataFetcher.placeOrder(orderData);
 
             if (response.paymentUrl) {
                 toast.success('Замовлення в обробці', {
