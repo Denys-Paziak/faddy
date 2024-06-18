@@ -193,8 +193,8 @@ export default function Page({ params }: { params: any }) {
                                     <p className='mt-12 mb-6'> Щоб додати товар в кошик ви маєте бути зареєстрованими</p>
 
                                     <div className="flex">
-                                        <Link href="/login">Login</Link>/
-                                        <Link href="/register">Register</Link>
+                                        <Link href="/login">Лоігін</Link>/
+                                        <Link href="/register">Реєстрація</Link>
                                     </div>
                                 </>
                             )}
